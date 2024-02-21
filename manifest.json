@@ -3,7 +3,11 @@
   "version": "1.0",
   "name": "Extensions Test Drag",
   "description": "Base Level Extension",
-  "permissions": ["activeTab"],
+
+  "permissions": [
+    "tabs",
+    "activeTab"
+  ],
 
   "icons": {
     "16": "images/icon-16.png",
