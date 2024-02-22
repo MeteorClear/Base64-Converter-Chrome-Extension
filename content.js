@@ -32,7 +32,7 @@ let selectedText = '';
 
 document.addEventListener('selectionchange', function(event) {
     selectedText = window.getSelection().toString();
-    console.log('Selected text:', selectedText);
+    //console.log('Selected text:', selectedText);
 });
 
 document.addEventListener('mouseup', function(event) {
