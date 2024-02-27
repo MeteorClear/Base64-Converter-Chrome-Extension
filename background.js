@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         draggedText = message.text;
     }
 
-    if (message.action === 'getDraggedText') {
+    if (message.action === 'getSelectedText') {
         sendResponse({ text: draggedText });
     }
 
