@@ -58,3 +58,49 @@ chrome.runtime.sendMessage({ action: 'getSelectedText' }, function(response) {
 
     console.log(response);
 });
+
+
+
+document.getElementById('copyDraggedText').addEventListener('click', function() {
+    copyText('draggedText');
+});
+
+document.getElementById('copyEncodedText').addEventListener('click', function() {
+    copyText('encodedText');
+});
+
+document.getElementById('copyDecodedText').addEventListener('click', function() {
+    copyText('decodedText');
+});
+
+
+
+function copyText(divId) {
+    let tempText = document.getElementById(divId).innerText;
+
+    navigator.clipboard.writeText(tempText)
+        .then(() => {
+            console.log('Text copied:', tempText);
+        })
+        .catch(error => {
+            console.log('Copy error:', error);
+        });
+}
+
+
+/*
+// execCommand is Deprecated
+function copyText(divId) {
+    let tempText = document.getElementById(divId).innerText;
+
+    let tempInput = document.createElement("input");
+    tempInput.value = tempText;
+
+    document.body.appendChild(tempInput);
+    tempInput.select();
+
+    document.execCommand("copy");
+
+    document.body.removeChild(tempInput);
+}
+*/

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "version": "1.0",
-  "name": "Extensions Test Drag",
-  "description": "Base Level Extension",
+  "name": "Base64 Converter",
+  "description": "It helps to encode or decode the dragged text to base64, WIP",
 
   "permissions": [
     "tabs",
