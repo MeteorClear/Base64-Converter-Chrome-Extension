@@ -2,26 +2,29 @@
 <html lang="kr">
 <head>
     <meta charset="UTF-8">
+    <!--
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    -->
     <title>Base64 Converter</title>
+    <link rel="stylesheet" href="./popup.css">
 </head>
 <body>
     <h3>Base64 Converter Chrome Extention</h2>
 
     <hr>
 
-    <div id="draggedText"></div>
-    <button id="copyDraggedText">Copy</button>
+    <div id="draggedText" class="text-box"></div>
+    <button id="copyDraggedText" class="copy-button">Copy</button>
 
     <hr>
 
-    <div id="encodedText"></div>
-    <button id="copyEncodedText">Copy</button>
+    <div id="encodedText" class="text-box"></div>
+    <button id="copyEncodedText" class="copy-button">Copy</button>
 
     <hr>
 
-    <div id="decodedText"></div>
-    <button id="copyDecodedText">Copy</button>
+    <div id="decodedText" class="text-box"></div>
+    <button id="copyDecodedText" class="copy-button">Copy</button>
     
     <script src="popup.js"></script>
 </body>
