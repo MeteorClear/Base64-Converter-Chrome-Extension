@@ -2,55 +2,28 @@ console.log("content.js load");
 
 let selectedText = '';
 
-document.addEventListener('selectionchange', function(event) {
-    selectedText = window.getSelection().toString();
-    //console.log('Selected text:', selectedText);
-});
+document.addEventListener('selectionchange', 
+    /**
+     * Selected text, that is, whenever the dragged text changes, it is taken and saved.
+     */
+    function(event) {
+        selectedText = window.getSelection().toString();
+    }
+);
 
-document.addEventListener('mouseup', function(event) {
-    if (selectedText) {
-        if (selectedText.length > 3000) {
-            selectedText = 'Over-selected string'
+document.addEventListener('mouseup', 
+    /**
+     * When the mouse up, it sends the selected text so far to 'background.js'.
+     * 
+     * If there is too much text, it sends an alternative text.
+     */
+    function(event) {
+        if (selectedText) {
+            if (selectedText.length > 3000) {
+                selectedText = 'Over-selected string'
+            }
+            chrome.runtime.sendMessage({text: selectedText});
+            console.log('Message send:', selectedText);
         }
-        chrome.runtime.sendMessage({text: selectedText});
-        console.log('Message send:', selectedText);
     }
-});
-
-
-/* 
-// not working
-document.addEventListener('dragstart', function(event) {
-
-    var selectedText = window.getSelection().toString();
-
-    if (selectedText) {
-        chrome.runtime.sendMessage({text: selectedText});
-    }
-
-});
-*/
-
-
-/* 
-// working but not intended
-window.addEventListener('selectstart', function(event) {
-    var selectedText = window.getSelection().toString();
-
-    if (selectedText) {
-        chrome.runtime.sendMessage({text: selectedText});
-    }
-
-    console.log(selectedText);
-});
-*/
-
-
-/* 
-// sample
-chrome.runtime.sendMessage({
-    key: value
-    },function(response) {
-        console.log(response.res);
-});	
-*/
+);
