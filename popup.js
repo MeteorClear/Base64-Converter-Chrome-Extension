@@ -1,6 +1,17 @@
-console.log("!popup!");
+console.log("popup.js load");
+
 
 chrome.runtime.sendMessage({ action: 'getSelectedText' }, function(response) {
+    updateCoding(response);
+});
+
+
+/**
+ * Receive the response to the selected text request and encode/decode the text to base64 and display it in 'popup.html'.
+ * @param {object} response Results of 'sendResponse' in 'chrome.runtime.onMessage' in 'background.js'
+ * @returns void
+ */
+function updateCoding(response) {
     if (response && response.text) {
 
         // select
@@ -10,13 +21,10 @@ chrome.runtime.sendMessage({ action: 'getSelectedText' }, function(response) {
 
         // encoding
         try {
-            const encoder = new TextEncoder();
-            let utf8EncodedStr = encoder.encode(selectedText);
-            
-            let encodedText = window.btoa(String.fromCharCode.apply(null, utf8EncodedStr));
-            document.getElementById('encodedText').textContent = encodedText;
+            let encodedText = encodeText(selectedText);
 
             console.log('Encoded Text:', encodedText);
+            document.getElementById('encodedText').textContent = encodedText;
 
         } catch (error) {
             console.log('error:',error);
@@ -26,19 +34,16 @@ chrome.runtime.sendMessage({ action: 'getSelectedText' }, function(response) {
 
         // decoding
         try {
-            let decodedText = window.atob(selectedText);
+            let _decodeTest = window.atob(selectedText);
 
             try {
-                const decoder = new TextDecoder('utf-8');
-                let binArray = new Uint8Array([...decodedText].map(char => char.charCodeAt(0)))
-                let utf8DecodedStr = decoder.decode(binArray);
+                let decodedText = decodeText(selectedText);
 
-                document.getElementById('decodedText').textContent = utf8DecodedStr;
-
-                console.log('Decoded Text:', utf8DecodedStr);
+                console.log('Decoded Text:', decodedText);
+                document.getElementById('decodedText').textContent = decodedText;
 
             } catch (error) {
-                console.log('error:',error);
+                console.log('error:', error);
                 document.getElementById('encodedText').textContent = 'decoding fail!';
 
             }
@@ -57,7 +62,47 @@ chrome.runtime.sendMessage({ action: 'getSelectedText' }, function(response) {
     }
 
     console.log(response);
-});
+}
+
+
+/**
+ * Encodes a given text string into a base64 encoded string representing its UTF-8 encoding.
+ * 
+ * This process involves two main steps,
+ *   1. converting the input text into UTF-8 byte sequence
+ *   2. encoding this byte sequence into a base64 string.
+ * @param {string} targetText The text string that will be encoded
+ * @returns {string} The base64 encoded string representing the UTF-8 encoding of the input text.
+ */
+function encodeText(targetText) {
+    const encoder = new TextEncoder();
+
+    let utf8EncodedStr = encoder.encode(targetText);
+    let encodedText = window.btoa(String.fromCharCode.apply(null, utf8EncodedStr));
+
+    return encodedText;
+}
+
+
+/**
+ * Decodes a base64 encoded string back to its original text.
+ * 
+ * This process involves two main steps,
+ *   1. decoding the base64 string to a binary string.
+ *   2. converting this binary string into a Uint8Array of UTF-8 byte values.
+ *   3. decoding the UTF-8 byte sequence back to
+ * @param {string} targetText The base64 encoded string to be decoded back to its original text representation.
+ * @returns {string} The original text string that was encoded.
+ */
+function decodeText(targetText) {
+    const decoder = new TextDecoder('utf-8');
+
+    let base64Text = window.atob(targetText);
+    let utf8DecodedStr = new Uint8Array([...base64Text].map(char => char.charCodeAt(0)))
+    let decodedText = decoder.decode(utf8DecodedStr);
+
+    return decodedText;
+}
 
 
 
@@ -74,9 +119,13 @@ document.getElementById('copyDecodedText').addEventListener('click', function() 
 });
 
 
-
-function copyText(divId) {
-    let tempText = document.getElementById(divId).innerText;
+/**
+ * Function that receives an id value and copies the text inside the tag with that id to the clipboard.
+ * @param {string} id The id value of tag to want to copy text inside from 'popup.html'
+ * @returns void
+ */
+function copyText(id) {
+    let tempText = document.getElementById(id).innerText;
 
     navigator.clipboard.writeText(tempText)
         .then(() => {
@@ -86,21 +135,3 @@ function copyText(divId) {
             console.log('Copy error:', error);
         });
 }
-
-
-/*
-// execCommand is Deprecated
-function copyText(divId) {
-    let tempText = document.getElementById(divId).innerText;
-
-    let tempInput = document.createElement("input");
-    tempInput.value = tempText;
-
-    document.body.appendChild(tempInput);
-    tempInput.select();
-
-    document.execCommand("copy");
-
-    document.body.removeChild(tempInput);
-}
-*/
