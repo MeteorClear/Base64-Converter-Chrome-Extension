@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "name": "Base64 Converter",
   "description": "It helps to encode or decode the dragged text to base64",
 
