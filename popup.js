@@ -55,7 +55,7 @@ function updateCoding(response) {
 
     // not selected
     } else {
-        document.getElementById('draggedText').textContent = '<No text selected>';
+        document.getElementById('draggedText').textContent = '<Drag text and reopen or enter manually>';
         document.getElementById('encodedText').textContent = '<No text selected>';
         document.getElementById('decodedText').textContent = '<No text selected>';
 
@@ -125,7 +125,7 @@ document.getElementById('copyDecodedText').addEventListener('click', function() 
  * @returns void
  */
 function copyText(id) {
-    let tempText = document.getElementById(id).innerText;
+    let tempText = document.getElementById(id).value;
 
     navigator.clipboard.writeText(tempText)
         .then(() => {
@@ -135,3 +135,47 @@ function copyText(id) {
             console.log('Copy error:', error);
         });
 }
+
+
+document.getElementById('manualUpdate').addEventListener('click', function() {
+    console.log('manual update');
+
+    let selectedText = document.getElementById("draggedText").value;
+
+    console.log('Selected Text:', selectedText);
+
+    // encoding
+    try {
+        let encodedText = encodeText(selectedText);
+
+        console.log('Encoded Text:', encodedText);
+        document.getElementById('encodedText').textContent = encodedText;
+
+    } catch (error) {
+        console.log('error:',error);
+        document.getElementById('encodedText').textContent = 'encoding fail!';
+
+    }
+
+    // decoding
+    try {
+        let _decodeTest = window.atob(selectedText);
+
+        try {
+            let decodedText = decodeText(selectedText);
+
+            console.log('Decoded Text:', decodedText);
+            document.getElementById('decodedText').textContent = decodedText;
+
+        } catch (error) {
+            console.log('error:', error);
+            document.getElementById('encodedText').textContent = 'decoding fail!';
+
+        }
+
+    } catch (error) {
+        document.getElementById('decodedText').textContent = 'Not encoded to base64';
+
+    }
+
+});
