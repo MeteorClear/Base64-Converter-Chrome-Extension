@@ -16,30 +16,25 @@
     </h4>
 
     <hr>
-    <!--
-    <div id="draggedText" class="text-box"></div>
-    -->
+
     <h4>Selected Text</h4>
     <textarea id="draggedText" class="text-box" cols="40" rows="5" spellcheck="false"></textarea>
     <button id="copyDraggedText" class="copy-button" style="width: 49%;">Copy</button>
     <button id="manualUpdate" class="copy-button" style="width: 49%; float: right;">Convert</button>
 
     <hr>
-    <!--
-    <div id="encodedText" class="text-box"></div>
-    -->
+
     <h4>Encoded Text</h4>
     <textarea id="encodedText" class="text-box" cols="40" rows="5" spellcheck="false"></textarea>
     <button id="copyEncodedText" class="copy-button">Copy</button>
 
     <hr>
-    <!--
-    <div id="decodedText" class="text-box"></div>
-    -->
+
     <h4>Decoded Text</h4>
     <textarea id="decodedText" class="text-box" cols="40" rows="5" spellcheck="false"></textarea>
     <button id="copyDecodedText" class="copy-button">Copy</button>
     
-    <script src="popup.js"></script>
+    <script type="module" src="textOperations.js"></script>
+    <script type="module" src="popup.js"></script>
 </body>
 </html>
