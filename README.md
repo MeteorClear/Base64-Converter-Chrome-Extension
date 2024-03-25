@@ -17,7 +17,7 @@ The Base64 Converter Chrome Extension is a simple tool designed to encode or dec
 ## Installation
 - **Installation using the Chrome Web Store**
   1. Open the Webstore link to this extension 
-    https://chromewebstore.google.com/detail/base64-converter/phnfdgkebnhlkphdjnhmbahgpbdlfpla?hl=en
+    `https://chromewebstore.google.com/detail/base64-converter/phnfdgkebnhlkphdjnhmbahgpbdlfpla?hl=en`
   2. Click "Add to Chrome"
 
 - **Manual Installation**

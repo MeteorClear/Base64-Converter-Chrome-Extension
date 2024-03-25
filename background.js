@@ -26,3 +26,39 @@ chrome.runtime.onMessage.addListener(
         console.log(draggedText);
     }
 );
+
+
+chrome.runtime.onInstalled.addListener(function() {
+    chrome.contextMenus.create({
+        'id': 'EncodeBase64',
+        'title': 'Encode Base64',
+        'contexts': ['selection']
+    });
+
+    chrome.contextMenus.create({
+        'id': 'DecodeBase64',
+        'title': 'Decode Base64',
+        'contexts': ['selection']
+    });
+});
+
+
+chrome.contextMenus.onClicked.addListener(function(info, tab) {
+    if (info.menuItemId === 'EncodeBase64' && info.selectionText) {
+        console.log('context menu click:', tab.id, info.menuItemId);
+
+        chrome.tabs.sendMessage(tab.id, {
+            action: 'encodeBase64', 
+            text: info.selectionText
+        });
+    }
+
+    if (info.menuItemId === 'DecodeBase64' && info.selectionText) {
+        console.log('context menu click:', tab.id, info.menuItemId);
+
+        chrome.tabs.sendMessage(tab.id, {
+            action: 'decodeBase64', 
+            text: info.selectionText
+        });
+    }
+});
