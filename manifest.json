@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "1.0.3",
+  "version": "1.0.4",
   "name": "Base64 Converter",
   "description": "It helps to encode or decode the dragged text to base64",
 
@@ -10,6 +10,10 @@
     "48": "images/icon-48.png",
     "128": "images/icon-128.png"
   },
+
+  "permissions": [
+    "contextMenus"
+  ],
 
   "background": {
     "service_worker": "background.js"

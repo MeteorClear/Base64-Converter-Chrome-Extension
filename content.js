@@ -2,6 +2,7 @@ console.log("content.js load");
 
 let selectedText = '';
 
+
 document.addEventListener('selectionchange', 
     /**
      * Selected text, that is, whenever the dragged text changes, it is taken and saved.
@@ -10,6 +11,7 @@ document.addEventListener('selectionchange',
         selectedText = window.getSelection().toString();
     }
 );
+
 
 document.addEventListener('mouseup', 
     /**
@@ -27,3 +29,14 @@ document.addEventListener('mouseup',
         }
     }
 );
+
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if (message.action === 'encodeBase64' && message.text) {
+        console.log('context menu:', message.action, message.text);
+    }
+
+    if (message.action === 'decodeBase64' && message.text) {
+        console.log('context menu:', message.action, message.text);
+    }
+});
