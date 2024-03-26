@@ -40,17 +40,11 @@ export function decodeText(targetText) {
 }
 
 
-/**
- * Function that receives an id value and copies the text inside the tag with that id to the clipboard.
- * @param {string} id The id value of tag to want to copy text inside from 'popup.html'
- * @returns void
- */
-export function copyText(id) {
-    let tempText = document.getElementById(id).value;
 
-    navigator.clipboard.writeText(tempText)
+export function copyText(copyTargetText) {
+    navigator.clipboard.writeText(copyTargetText)
         .then(() => {
-            console.log('Text copied:', tempText);
+            console.log('Text copied:', copyTargetText);
         })
         .catch(error => {
             console.log('Copy error:', error);
