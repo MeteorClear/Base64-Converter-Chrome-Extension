@@ -73,15 +73,18 @@ function updateCoding(selectedText) {
 
 
 document.getElementById('copyDraggedText').addEventListener('click', function() {
-    TextOps.copyText('draggedText');
+    let copyTargetText = document.getElementById('draggedText').value;
+    TextOps.copyText(copyTargetText);
 });
 
 document.getElementById('copyEncodedText').addEventListener('click', function() {
-    TextOps.copyText('encodedText');
+    let copyTargetText = document.getElementById('encodedText').value;
+    TextOps.copyText(copyTargetText);
 });
 
 document.getElementById('copyDecodedText').addEventListener('click', function() {
-    TextOps.copyText('decodedText');
+    let copyTargetText = document.getElementById('decodedText').value;
+    TextOps.copyText(copyTargetText);
 });
 
 
