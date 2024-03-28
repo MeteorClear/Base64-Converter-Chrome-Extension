@@ -40,7 +40,11 @@ export function decodeText(targetText) {
 }
 
 
-
+/**
+ * Receive the string and copy it to the clipboard
+ * @param {string} copyTargetText 
+ * @returns void
+ */
 export function copyText(copyTargetText) {
     navigator.clipboard.writeText(copyTargetText)
         .then(() => {

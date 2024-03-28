@@ -33,53 +33,68 @@ document.addEventListener('mouseup',
 );
 
 
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    if (message.text) {
-        console.log('context menu:', message.action, message.text);
+chrome.runtime.onMessage.addListener(
+    /**
+     * Waiting for a response from 'background.js'.
+     * 
+     * When a contextMenus.onClick event occurs, Receive the action name and selected text information.
+     * 
+     * Encode or decode according to the action and display the result using by prompt.
+     * @param {object} message The message object received from 'background.js'.
+     * @param {object} sender The object that provides information about the context from which the message was sent, including the tab and frame id.
+     * @param {function} sendResponse The function that can be called to send a response back to the sender of the message.
+     */
+    function(message, sender, sendResponse) {
+        if (message.text) {
+            console.log('context menu:', message.action, message.text);
 
-        let codedText = '';
+            let codedText = '';
 
-        if (message.action === 'encodeBase64') {
-            try {
-                codedText = encodeText(message.text);
-
-            } catch (error) {
-                console.log('error:', error);
-
-            }
-            
-        } else if (message.action === 'decodeBase64') {
-            try {
-                let _decodeTest = window.atob(selectedText);
-
+            // encode
+            if (message.action === 'encodeBase64') {
                 try {
-                    codedText = decodeText(message.text);
+                    codedText = encodeText(message.text);
 
                 } catch (error) {
                     console.log('error:', error);
 
                 }
-                
-            } catch (error) {
-                alert('Not encoded to base64')
+
+            // decode
+            } else if (message.action === 'decodeBase64') {
+                try {
+                    let _decodeTest = window.atob(selectedText);
+
+                    try {
+                        codedText = decodeText(message.text);
+
+                    } catch (error) {
+                        console.log('error:', error);
+
+                    }
+
+                } catch (error) {
+                    alert('Not encoded to base64')
+
+                }
+
+            } else {
+                console.log('unknown action');
 
             }
-                
-        } else {
-            console.log('unknown action');
 
-        }
+            let copyTargetText = prompt('Click OK to copy to the clipboard.', codedText);
+            if (copyTargetText != null) {
+                copyText(codedText);
 
-        let copyTargetText = prompt('Click OK to copy to the clipboard.', codedText);
-        if (copyTargetText != null) {
-            copyText(codedText);
-
+            }
         }
     }
-});
+);
 
 
 /**********************************************************************************************/
+// Same as 'textOperations.js'
 
 function encodeText(targetText) {
     const encoder = new TextEncoder();
