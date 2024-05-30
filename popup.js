@@ -1,6 +1,6 @@
 import * as TextOps from './textOperations.js';
 
-console.log("popup.js load");
+//console.log("popup.js load");
 
 
 chrome.runtime.sendMessage({ action: 'getSelectedText' }, 
@@ -14,7 +14,7 @@ chrome.runtime.sendMessage({ action: 'getSelectedText' },
             let selectedText = response.text;
 
             document.getElementById('draggedText').textContent = selectedText;
-            console.log('Selected Text:', selectedText);
+            //console.log('Selected Text:', selectedText);
 
             updateCoding(selectedText);
 
@@ -25,7 +25,7 @@ chrome.runtime.sendMessage({ action: 'getSelectedText' },
 
         }
 
-        console.log(response);
+        //console.log(response);
     }
 );
 
@@ -40,7 +40,7 @@ function updateCoding(selectedText) {
     try {
         let encodedText = TextOps.encodeText(selectedText);
 
-        console.log('Encoded Text:', encodedText);
+        //console.log('Encoded Text:', encodedText);
         document.getElementById('encodedText').textContent = encodedText;
 
     } catch (error) {
@@ -56,7 +56,7 @@ function updateCoding(selectedText) {
         try {
             let decodedText = TextOps.decodeText(selectedText);
 
-            console.log('Decoded Text:', decodedText);
+            //console.log('Decoded Text:', decodedText);
             document.getElementById('decodedText').textContent = decodedText;
 
         } catch (error) {
@@ -93,10 +93,10 @@ document.getElementById('manualUpdate').addEventListener('click',
      * When clicking the manual button, the value of the textarea of 'draggedText' in 'popup.html' is taken and the encoding/decoding result is updated
      */
     function() {
-        console.log('manual update');
+        //console.log('manual update');
 
         let selectedText = document.getElementById("draggedText").value;
-        console.log('Selected Text:', selectedText);
+        //console.log('Selected Text:', selectedText);
 
         updateCoding(selectedText);
 

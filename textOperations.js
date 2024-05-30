@@ -1,4 +1,4 @@
-console.log("textOperations.js load");
+//console.log("textOperations.js load");
 
 /**
  * Encodes a given text string into a base64 encoded string representing its UTF-8 encoding.

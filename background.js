@@ -1,4 +1,4 @@
-console.log("background.js load");
+//console.log("background.js load");
 
 let draggedText = '';
 
@@ -23,7 +23,7 @@ chrome.runtime.onMessage.addListener(
             sendResponse({ text: draggedText });
         }
 
-        console.log(draggedText);
+        //console.log(draggedText);
     }
 );
 
@@ -56,7 +56,7 @@ chrome.contextMenus.onClicked.addListener(
      */
     function(info, tab) {
         if (info.menuItemId === 'EncodeBase64' && info.selectionText) {
-            console.log('context menu click:', tab.id, info.menuItemId);
+            //console.log('context menu click:', tab.id, info.menuItemId);
 
             chrome.tabs.sendMessage(tab.id, {
                 action: 'encodeBase64', 
@@ -65,7 +65,7 @@ chrome.contextMenus.onClicked.addListener(
         }
 
         if (info.menuItemId === 'DecodeBase64' && info.selectionText) {
-            console.log('context menu click:', tab.id, info.menuItemId);
+            //console.log('context menu click:', tab.id, info.menuItemId);
 
             chrome.tabs.sendMessage(tab.id, {
                 action: 'decodeBase64', 

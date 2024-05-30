@@ -1,4 +1,4 @@
-console.log("content.js load");
+//console.log("content.js load");
 
 let selectedText = '';
 
@@ -27,7 +27,7 @@ document.addEventListener('mouseup',
 
             chrome.runtime.sendMessage({text: selectedText});
 
-            console.log('Message send:', selectedText);
+            //console.log('Message send:', selectedText);
         }
     }
 );
@@ -46,7 +46,7 @@ chrome.runtime.onMessage.addListener(
      */
     function(message, sender, sendResponse) {
         if (message.text) {
-            console.log('context menu:', message.action, message.text);
+            //console.log('context menu:', message.action, message.text);
 
             let codedText = '';
 
