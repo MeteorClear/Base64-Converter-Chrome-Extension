@@ -1,96 +1,77 @@
-console.log("content.js load");
+//console.log("content.js load");
 
 let selectedText = '';
 
 
-document.addEventListener('selectionchange', 
-    /**
-     * Selected text, that is, whenever the dragged text changes, it is taken and saved.
-     */
-    function(event) {
-        selectedText = window.getSelection().toString();
-    }
-);
+/**
+ * Handles the selection change event to update the selected text.
+ */
+function handleSelectionChange() {
+    selectedText = window.getSelection().toString();
+}
 
 
-document.addEventListener('mouseup', 
-    /**
-     * When the mouse up, it sends the selected text so far to 'background.js'.
-     * 
-     * If there is too much text, it sends an alternative text.
-     */
-    function(event) {
-        if (selectedText) {
-            if (selectedText.length > 3000) {
-                selectedText = 'Over-selected string'
-            }
-
-            chrome.runtime.sendMessage({text: selectedText});
-
-            console.log('Message send:', selectedText);
+/**
+ * Handles the mouse up event to send the selected text to 'background.js'.
+ */
+function handleMouseUp() {
+    if (selectedText) {
+        if (selectedText.length > 3000) {
+            selectedText = 'Over-selected string';
         }
+        chrome.runtime.sendMessage({ text: selectedText });
+        //console.log('Message send:', selectedText);
     }
-);
+}
 
 
-chrome.runtime.onMessage.addListener(
-    /**
-     * Waiting for a response from 'background.js'.
-     * 
-     * When a contextMenus.onClick event occurs, Receive the action name and selected text information.
-     * 
-     * Encode or decode according to the action and display the result using by prompt.
-     * @param {object} message The message object received from 'background.js'.
-     * @param {object} sender The object that provides information about the context from which the message was sent, including the tab and frame id.
-     * @param {function} sendResponse The function that can be called to send a response back to the sender of the message.
-     */
-    function(message, sender, sendResponse) {
-        if (message.text) {
-            console.log('context menu:', message.action, message.text);
+/**
+ * Handles incoming messages from 'background.js'.  
+ * Encodes or decodes the text based on the action and displays the result using a prompt.  
+ * 
+ * @param {object} message The message object received from 'background.js'.
+ * @param {object} sender The object that provides information about the context from which the message was sent, including the tab and frame id.
+ * @param {function} sendResponse The function that can be called to send a response back to the sender of the message.
+ */
+function handleMessage(message, sender, sendResponse) {
+    if (message.text) {
+        //console.log('context menu:', message.action, message.text);
+        let codedText = '';
 
-            let codedText = '';
-
-            // encode
+        try {
             if (message.action === 'encodeBase64') {
-                try {
-                    codedText = encodeText(message.text);
+                codedText = encodeText(message.text);
 
-                } catch (error) {
-                    console.log('error:', error);
-
-                }
-
-            // decode
             } else if (message.action === 'decodeBase64') {
-                try {
-                    let _decodeTest = window.atob(selectedText);
-
-                    try {
-                        codedText = decodeText(message.text);
-
-                    } catch (error) {
-                        console.log('error:', error);
-
-                    }
-
-                } catch (error) {
-                    alert('Not encoded to base64')
-
-                }
+                codedText = decodeText(message.text);
 
             } else {
                 console.log('unknown action');
 
             }
+        } catch (error) {
+            console.log('error:', error);
 
-            let copyTargetText = prompt('Click OK to copy to the clipboard.', codedText);
-            if (copyTargetText != null) {
-                copyText(codedText);
+            if (message.action === 'decodeBase64') {
+                alert('Not encoded to base64');
 
             }
         }
+
+        let copyTargetText = prompt('Click OK to copy to the clipboard.', codedText);
+
+        if (copyTargetText != null) {
+            copyText(codedText);
+
+        }
     }
-);
+}
+
+
+// Register event listeners
+document.addEventListener('selectionchange', handleSelectionChange);
+document.addEventListener('mouseup', handleMouseUp);
+chrome.runtime.onMessage.addListener(handleMessage);
 
 
 /**********************************************************************************************/
@@ -98,20 +79,16 @@ chrome.runtime.onMessage.addListener(
 
 function encodeText(targetText) {
     const encoder = new TextEncoder();
-
-    let utf8EncodedStr = encoder.encode(targetText);
-    let encodedText = window.btoa(String.fromCharCode.apply(null, utf8EncodedStr));
-
+    const utf8EncodedStr = encoder.encode(targetText);
+    const encodedText = window.btoa(String.fromCharCode.apply(null, utf8EncodedStr));
     return encodedText;
 }
 
 function decodeText(targetText) {
     const decoder = new TextDecoder('utf-8');
-
-    let base64Text = window.atob(targetText);
-    let utf8DecodedStr = new Uint8Array([...base64Text].map(char => char.charCodeAt(0)))
-    let decodedText = decoder.decode(utf8DecodedStr);
-
+    const base64Text = window.atob(targetText);
+    const utf8DecodedStr = new Uint8Array([...base64Text].map(char => char.charCodeAt(0)))
+    const decodedText = decoder.decode(utf8DecodedStr);
     return decodedText;
 }
 
